@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Users,
@@ -12,6 +13,8 @@ import {
   Shield,
   Download,
   Sparkles,
+  Settings,
+  Save,
 } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -19,7 +22,29 @@ import { Button } from '@/components/ui/Button';
 import toast from 'react-hot-toast';
 
 export const AdminOverviewPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'projects' | 'templates' | 'users' | 'orders' | 'settings'>('overview');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Sync tab state with URL path
+  const getTabFromPath = (path: string) => {
+    if (path.includes('/projects')) return 'projects';
+    if (path.includes('/templates')) return 'templates';
+    if (path.includes('/users') || path.includes('/sellers')) return 'users';
+    if (path.includes('/orders') || path.includes('/payments') || path.includes('/reports') || path.includes('/audit')) return 'orders';
+    if (path.includes('/settings')) return 'settings';
+    return 'overview';
+  };
+
+  const [activeTab, setActiveTab] = useState<string>(getTabFromPath(location.pathname));
+
+  useEffect(() => {
+    setActiveTab(getTabFromPath(location.pathname));
+  }, [location.pathname]);
+
+  const handleTabChange = (tabKey: string, path: string) => {
+    setActiveTab(tabKey);
+    navigate(path);
+  };
 
   // Mock Admin Data State
   const [projects, setProjects] = useState([
@@ -41,6 +66,12 @@ export const AdminOverviewPage: React.FC = () => {
     { id: 'USR-002', name: 'Rian Hidayat', email: 'rian@nusantara.id', role: 'user', status: 'Active' },
     { id: 'USR-003', name: 'Studio Code ID', email: 'seller@studiocode.id', role: 'seller', status: 'Verified' },
     { id: 'USR-004', name: 'Budi Santoso', email: 'budi@tokoberkah.com', role: 'user', status: 'Active' },
+  ]);
+
+  const [orders] = useState([
+    { id: 'ORD-901', item: 'Nexus Pro UI Template', buyer: 'Rian Hidayat', amount: 189000, date: '2026-08-06', status: 'Paid' },
+    { id: 'ORD-902', item: 'Velox SaaS Dashboard', buyer: 'Budi Santoso', amount: 249000, date: '2026-08-05', status: 'Paid' },
+    { id: 'ORD-903', item: 'Website Company Profile Service', buyer: 'PT Nusantara Digital', amount: 4200000, date: '2026-08-04', status: 'Paid (DP 50%)' },
   ]);
 
   const handleUpdateProjectStatus = (id: string, newStatus: string) => {
@@ -156,7 +187,7 @@ export const AdminOverviewPage: React.FC = () => {
       {/* Main Tab Navigation */}
       <div className="flex items-center gap-2 border-b border-white/10 overflow-x-auto pb-2">
         <button
-          onClick={() => setActiveTab('overview')}
+          onClick={() => handleTabChange('overview', '/admin')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
             activeTab === 'overview'
               ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
@@ -166,7 +197,7 @@ export const AdminOverviewPage: React.FC = () => {
           <LayoutDashboard className="w-4 h-4" /> Overview & Ringkasan
         </button>
         <button
-          onClick={() => setActiveTab('projects')}
+          onClick={() => handleTabChange('projects', '/admin/projects')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
             activeTab === 'projects'
               ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
@@ -176,7 +207,7 @@ export const AdminOverviewPage: React.FC = () => {
           <FolderGit2 className="w-4 h-4" /> Proyek Website Custom ({projects.length})
         </button>
         <button
-          onClick={() => setActiveTab('templates')}
+          onClick={() => handleTabChange('templates', '/admin/templates')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
             activeTab === 'templates'
               ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
@@ -186,7 +217,7 @@ export const AdminOverviewPage: React.FC = () => {
           <FileCheck className="w-4 h-4" /> Moderasi Template ({templates.length})
         </button>
         <button
-          onClick={() => setActiveTab('users')}
+          onClick={() => handleTabChange('users', '/admin/users')}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
             activeTab === 'users'
               ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
@@ -194,6 +225,26 @@ export const AdminOverviewPage: React.FC = () => {
           }`}
         >
           <Users className="w-4 h-4" /> Manajemen User ({users.length})
+        </button>
+        <button
+          onClick={() => handleTabChange('orders', '/admin/orders')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            activeTab === 'orders'
+              ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
+              : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+          }`}
+        >
+          <DollarSign className="w-4 h-4" /> Transaksi ({orders.length})
+        </button>
+        <button
+          onClick={() => handleTabChange('settings', '/admin/settings')}
+          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+            activeTab === 'settings'
+              ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/20'
+              : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
+          }`}
+        >
+          <Settings className="w-4 h-4" /> Pengaturan Platform
         </button>
       </div>
 
@@ -208,7 +259,7 @@ export const AdminOverviewPage: React.FC = () => {
               <h3 className="text-base font-bold text-white flex items-center gap-2">
                 <FolderGit2 className="w-4 h-4 text-purple-400" /> Pesanan Proyek Agency Terkini
               </h3>
-              <Button size="sm" variant="ghost" onClick={() => setActiveTab('projects')}>
+              <Button size="sm" variant="ghost" onClick={() => handleTabChange('projects', '/admin/projects')}>
                 Lihat Semua
               </Button>
             </div>
@@ -295,16 +346,16 @@ export const AdminOverviewPage: React.FC = () => {
                   size="sm"
                   variant="outline"
                   className="w-full justify-start text-xs py-2.5"
-                  onClick={() => setActiveTab('projects')}
+                  onClick={() => handleTabChange('projects', '/admin/projects')}
                   leftIcon={<FolderGit2 className="w-4 h-4" />}
                 >
-                  Kelola Proyek Custom (4)
+                  Kelola Proyek Custom ({projects.length})
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   className="w-full justify-start text-xs py-2.5"
-                  onClick={() => setActiveTab('templates')}
+                  onClick={() => handleTabChange('templates', '/admin/templates')}
                   leftIcon={<FileCheck className="w-4 h-4" />}
                 >
                   Moderasi Template UI (1 Pending)
@@ -313,7 +364,7 @@ export const AdminOverviewPage: React.FC = () => {
                   size="sm"
                   variant="outline"
                   className="w-full justify-start text-xs py-2.5"
-                  onClick={() => setActiveTab('users')}
+                  onClick={() => handleTabChange('users', '/admin/users')}
                   leftIcon={<Users className="w-4 h-4" />}
                 >
                   Tambah User / Mitra Penjual
@@ -494,6 +545,99 @@ export const AdminOverviewPage: React.FC = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </Card>
+      )}
+
+      {/* TAB 5: ORDERS & TRANSACTIONS */}
+      {activeTab === 'orders' && (
+        <Card className="p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div>
+              <h3 className="text-lg font-bold text-white">Transaksi & Revenue Audit</h3>
+              <p className="text-xs text-zinc-400">Riwayat pembayaran masuk dari pesanan proyek dan pembelian template.</p>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-zinc-400 uppercase tracking-wider text-[10px]">
+                  <th className="pb-3 font-semibold">ID Transaksi</th>
+                  <th className="pb-3 font-semibold">Produk / Layanan</th>
+                  <th className="pb-3 font-semibold">Pembeli</th>
+                  <th className="pb-3 font-semibold">Jumlah Biaya</th>
+                  <th className="pb-3 font-semibold">Tanggal</th>
+                  <th className="pb-3 font-semibold text-right">Status Pembayaran</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {orders.map((o) => (
+                  <tr key={o.id} className="hover:bg-white/[0.02]">
+                    <td className="py-4 font-bold text-purple-400">{o.id}</td>
+                    <td className="py-4 font-bold text-white">{o.item}</td>
+                    <td className="py-4 text-zinc-300">{o.buyer}</td>
+                    <td className="py-4 font-extrabold text-emerald-400">{formatRupiah(o.amount)}</td>
+                    <td className="py-4 text-zinc-400">{o.date}</td>
+                    <td className="py-4 text-right">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        {o.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+      )}
+
+      {/* TAB 6: SETTINGS */}
+      {activeTab === 'settings' && (
+        <Card className="p-6 space-y-6 max-w-3xl">
+          <div className="border-b border-white/10 pb-4">
+            <h3 className="text-lg font-bold text-white">Pengaturan Platform BRaft.Dev</h3>
+            <p className="text-xs text-zinc-400">Konfigurasi umum agensi dan integrasi gateway.</p>
+          </div>
+
+          <div className="space-y-4 text-xs">
+            <div className="space-y-1.5">
+              <label className="text-zinc-300 font-bold">Nama Platform Agency</label>
+              <input
+                type="text"
+                defaultValue="BRaft.Dev — Digital Agency & Template Marketplace"
+                className="w-full p-3 rounded-xl bg-zinc-900 border border-white/10 text-white font-medium focus:outline-none focus:border-purple-500"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-zinc-300 font-bold">Nomor WhatsApp Konsultan Admin</label>
+              <input
+                type="text"
+                defaultValue="+62 812-3456-7890"
+                className="w-full p-3 rounded-xl bg-zinc-900 border border-white/10 text-white font-medium focus:outline-none focus:border-purple-500"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-zinc-300 font-bold">Email Notifikasi Agency</label>
+              <input
+                type="email"
+                defaultValue="admin@braft.dev"
+                className="w-full p-3 rounded-xl bg-zinc-900 border border-white/10 text-white font-medium focus:outline-none focus:border-purple-500"
+              />
+            </div>
+
+            <div className="pt-4 border-t border-white/10">
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => toast.success('Pengaturan platform berhasil disimpan!')}
+                leftIcon={<Save className="w-4 h-4" />}
+              >
+                Simpan Pengaturan
+              </Button>
+            </div>
           </div>
         </Card>
       )}
