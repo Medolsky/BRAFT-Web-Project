@@ -85,7 +85,7 @@ export const AppRoutes: React.FC = () => {
         }
       >
         <Route index element={<AdminOverviewPage />} />
-        <Route path="*" element={<Navigate to="/admin" replace />} />
+        <Route path="*" element={<AdminOverviewPage />} />
       </Route>
 
       {/* Fallback */}
