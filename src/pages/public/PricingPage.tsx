@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { MOCK_SERVICES } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -12,7 +12,8 @@ import { FadeIn, StaggerContainer, StaggerItem, HoverScale } from '../../compone
 export const PricingPage: React.FC = () => {
   const { t } = useTranslation();
   const [selectedServiceIndex, setSelectedServiceIndex] = useState(0);
-  const currentService = MOCK_SERVICES[selectedServiceIndex] || MOCK_SERVICES[0];
+  const services = useDataStore((s) => s.services);
+  const currentService = services[selectedServiceIndex] || services[0];
 
   return (
     <div className="space-y-16 pb-20 pt-8">
@@ -30,7 +31,7 @@ export const PricingPage: React.FC = () => {
       {/* Service Selector Tabs */}
       <section className="container-main space-y-12">
         <FadeIn delay={0.15} className="flex items-center justify-center gap-2 overflow-x-auto pb-2">
-          {MOCK_SERVICES.map((srv, idx) => (
+          {services.map((srv, idx) => (
             <button
               key={srv.id}
               onClick={() => setSelectedServiceIndex(idx)}

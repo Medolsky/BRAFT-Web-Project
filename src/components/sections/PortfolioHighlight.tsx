@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, TrendingUp } from 'lucide-react';
-import { MOCK_PORTFOLIO } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -10,7 +10,8 @@ import { FadeIn, SlideIn, ScaleIn } from '../ui/motion';
 
 export const PortfolioHighlight: React.FC = () => {
   const { t } = useTranslation();
-  const featuredItem = MOCK_PORTFOLIO[0];
+  const portfolio = useDataStore((s) => s.portfolio);
+  const featuredItem = portfolio.find(p => p.isFeatured) || portfolio[0];
 
   if (!featuredItem) return null;
 

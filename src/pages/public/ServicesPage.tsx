@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
-import { MOCK_SERVICES } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
+import { Service } from '../../types';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -12,10 +13,11 @@ import toast from 'react-hot-toast';
 
 export const ServicesPage: React.FC = () => {
   const { t } = useTranslation();
-  const [selectedService, setSelectedService] = useState<typeof MOCK_SERVICES[0] | null>(null);
+  const services = useDataStore((s) => s.services);
+  const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isBriefModalOpen, setIsBriefModalOpen] = useState(false);
 
-  const handleOrder = (service: typeof MOCK_SERVICES[0]) => {
+  const handleOrder = (service: Service) => {
     setSelectedService(service);
     setIsBriefModalOpen(true);
   };
@@ -41,7 +43,7 @@ export const ServicesPage: React.FC = () => {
 
       {/* Services List with Packages */}
       <section className="container-main space-y-16">
-        {MOCK_SERVICES.map((service) => (
+        {services.map((service) => (
           <FadeIn key={service.id} y={40}>
             <div className="space-y-8 p-8 bg-zinc-950/40 border border-white/10 rounded-3xl backdrop-blur-md hover:border-purple-500/30 transition-colors duration-500">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b border-white/10 pb-6">

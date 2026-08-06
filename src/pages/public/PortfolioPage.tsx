@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TrendingUp, ArrowRight } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { MOCK_PORTFOLIO } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -12,10 +12,11 @@ import { FadeIn, SlideIn, ScaleIn } from '../../components/ui/motion';
 export const PortfolioPage: React.FC = () => {
   const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const portfolio = useDataStore((s) => s.portfolio);
 
   const categories = ['all', 'Web Application', 'E-commerce', 'Company Profile'];
 
-  const filteredItems = MOCK_PORTFOLIO.filter(
+  const filteredItems = portfolio.filter(
     (item) => activeCategory === 'all' || item.category === activeCategory
   );
 

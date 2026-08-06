@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search, Eye, ShoppingCart } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
-import { MOCK_TEMPLATES, MOCK_CATEGORIES } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { Button } from '../../components/ui/Button';
@@ -10,7 +10,7 @@ import { Input } from '../../components/ui/Input';
 import { Rating } from '../../components/ui/Rating';
 import { Modal } from '../../components/ui/Modal';
 import { useCartStore } from '../../stores/cartStore';
-import { LicenseType } from '../../types';
+import { LicenseType, Template } from '../../types';
 import { FadeIn, StaggerContainer, StaggerItem, HoverScale } from '../../components/ui/motion';
 import toast from 'react-hot-toast';
 
@@ -18,13 +18,17 @@ export const TemplatesPage: React.FC = () => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedTemplate, setSelectedTemplate] = useState<typeof MOCK_TEMPLATES[0] | null>(null);
+  const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [selectedLicense, setSelectedLicense] = useState<LicenseType>('personal');
   const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
 
   const addItem = useCartStore((state) => state.addItem);
+  const templates = useDataStore((s) => s.templates);
+  const categories = useDataStore((s) => s.categories);
 
-  const filteredTemplates = MOCK_TEMPLATES.filter((tpl) => {
+  const publishedTemplates = templates.filter(t => t.status === 'published');
+
+  const filteredTemplates = publishedTemplates.filter((tpl) => {
     const matchesSearch =
       tpl.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       tpl.shortDescription.toLowerCase().includes(searchQuery.toLowerCase());
@@ -32,12 +36,12 @@ export const TemplatesPage: React.FC = () => {
     return matchesSearch && matchesCategory;
   });
 
-  const handleOpenPreview = (tpl: typeof MOCK_TEMPLATES[0]) => {
+  const handleOpenPreview = (tpl: Template) => {
     setSelectedTemplate(tpl);
     setIsPreviewModalOpen(true);
   };
 
-  const handleAddToCart = (tpl: typeof MOCK_TEMPLATES[0], license: LicenseType = 'personal') => {
+  const handleAddToCart = (tpl: Template, license: LicenseType = 'personal') => {
     addItem(tpl, license);
     toast.success(`${tpl.name} (${license} license) ditambahkan ke keranjang!`);
   };
@@ -75,10 +79,10 @@ export const TemplatesPage: React.FC = () => {
                 onClick={() => setSelectedCategory('all')}
                 className={`chip-21st cursor-pointer ${selectedCategory === 'all' ? 'chip-21st-active' : ''}`}
               >
-                Semua ({MOCK_TEMPLATES.length})
+                Semua ({publishedTemplates.length})
               </button>
-              {MOCK_CATEGORIES.map((cat) => {
-                const count = MOCK_TEMPLATES.filter((t) => t.categoryId === cat.id).length;
+              {categories.map((cat) => {
+                const count = publishedTemplates.filter((t) => t.categoryId === cat.id).length;
                 return (
                   <button
                     key={cat.id}

@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Eye, ShoppingCart } from 'lucide-react';
-import { MOCK_TEMPLATES } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
+import { Template } from '../../types';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -14,8 +15,9 @@ import toast from 'react-hot-toast';
 export const FeaturedTemplates: React.FC = () => {
   const { t } = useTranslation();
   const addItem = useCartStore((state) => state.addItem);
+  const templates = useDataStore((s) => s.templates);
 
-  const handleAddToCart = (template: typeof MOCK_TEMPLATES[0]) => {
+  const handleAddToCart = (template: Template) => {
     addItem(template, 'personal');
     toast.success(`${template.name} ditambahkan ke keranjang!`);
   };
@@ -44,7 +46,7 @@ export const FeaturedTemplates: React.FC = () => {
 
         {/* Templates Grid — staggered */}
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {MOCK_TEMPLATES.map((template) => (
+          {templates.filter(t => t.status === 'published').map((template) => (
             <StaggerItem key={template.id}>
               <HoverScale>
                 <Card className="p-0 overflow-hidden group flex flex-col justify-between h-full">

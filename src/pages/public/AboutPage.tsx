@@ -1,13 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Award, Target, ShieldCheck } from 'lucide-react';
-import { FOUNDER_DATA } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { FadeIn, SlideIn, ScaleIn, HoverScale } from '../../components/ui/motion';
 
 export const AboutPage: React.FC = () => {
   const { t } = useTranslation();
+  const FOUNDER_DATA = useDataStore((s) => s.founderData);
 
   return (
     <div className="space-y-16 pb-20 pt-8">

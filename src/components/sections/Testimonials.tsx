@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Quote } from 'lucide-react';
-import { MOCK_TESTIMONIALS } from '../../data/mockData';
+import { useDataStore } from '../../stores/dataStore';
 import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Rating } from '../ui/Rating';
@@ -9,6 +9,7 @@ import { FadeIn, StaggerContainer, StaggerItem, HoverScale } from '../ui/motion'
 
 export const Testimonials: React.FC = () => {
   const { t } = useTranslation();
+  const testimonials = useDataStore((s) => s.testimonials);
 
   return (
     <section className="section-padding bg-zinc-950/50 border-y border-white/10 relative overflow-hidden">
@@ -18,13 +19,16 @@ export const Testimonials: React.FC = () => {
       <div className="container-main space-y-12 relative z-10">
         <FadeIn className="text-center w-full max-w-xl mx-auto space-y-3">
           <Badge variant="orange">{t('testimonials.title')}</Badge>
-          <h2 className="text-3xl md:text-4xl font-extrabold font-display text-white">
-            Apa Kata <em className="font-serif-italic text-orange-400 font-normal">Klien</em> Kami
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-white">
+            Apa Kata <em className="font-serif-italic text-purple-400 font-normal">Klien Kami</em>
           </h2>
+          <p className="text-zinc-400 text-xs sm:text-sm">
+            Kepercayaan dan kepuasan dari puluhan bisnis & kreator digital di Indonesia.
+          </p>
         </FadeIn>
 
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.12}>
-          {MOCK_TESTIMONIALS.map((item) => (
+          {testimonials.map((item) => (
             <StaggerItem key={item.id}>
               <HoverScale>
                 <Card className="space-y-4 flex flex-col justify-between relative h-full">
