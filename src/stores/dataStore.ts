@@ -203,7 +203,7 @@ export const useDataStore = create<DataState>()(
     }),
     {
       name: 'braft-data-store',
-      version: 4,
+      version: 5,
       migrate: (persistedState: any) => {
         if (!persistedState) return persistedState;
 
@@ -213,6 +213,17 @@ export const useDataStore = create<DataState>()(
               ...t,
               thumbnailUrl: '/smartpos-preview.png',
               previewImages: ['/smartpos-preview.png', '/smartpos-banner.png'],
+            };
+          }
+          if (t.id === 't-coffeeshop') {
+            return {
+              ...t,
+              thumbnailUrl: '/coffeeshop-preview.png',
+              previewImages: [
+                '/coffeeshop-preview.png',
+                '/coffeeshop-menu.jpg',
+                '/coffeeshop-admin.jpg',
+              ],
             };
           }
           return {
@@ -233,6 +244,17 @@ export const useDataStore = create<DataState>()(
               ...p,
               thumbnailUrl: '/smartpos-banner.png',
               gallery: ['/smartpos-banner.png', '/smartpos-preview.png'],
+            };
+          }
+          if (p.id === 'p-coffeeshop') {
+            return {
+              ...p,
+              thumbnailUrl: '/coffeeshop-preview.png',
+              gallery: [
+                '/coffeeshop-preview.png',
+                '/coffeeshop-menu.jpg',
+                '/coffeeshop-admin.jpg',
+              ],
             };
           }
           return {
