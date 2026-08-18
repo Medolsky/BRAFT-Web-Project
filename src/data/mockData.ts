@@ -176,6 +176,49 @@ export const MOCK_SERVICES: Service[] = [
 
 export const MOCK_TEMPLATES: Template[] = [
   {
+    id: 't-smartpos',
+    sellerId: 'sel-braft',
+    seller: {
+      id: 'sel-braft',
+      userId: 'u-braft',
+      brandName: 'BRaft Official',
+      slug: 'braft-official',
+      avatarUrl: '/braft-logo.png',
+      status: 'verified',
+      totalSales: 520,
+      totalRevenue: 155000000,
+      rating: 5.0,
+      createdAt: '2025-01-01',
+    },
+    name: 'SmartPOS Megastore — Point of Sale & Inventory System',
+    slug: 'smartpos-megastore-pos-inventory',
+    shortDescription: 'Aplikasi kasir (POS), manajemen stok inventaris, multi-role (Admin & Kasir), barcode scanning & cetak struk.',
+    description: 'SmartPOS Megastore adalah sistem kasir Point of Sale (POS) dan manajemen inventaris siap pakai terlengkap. Dilengkapi antarmuka transaksi kasir cepat, barcode scanning, cetak struk nota, manajemen stok produk otomatis, laporan keuangan real-time, serta akses multi-role untuk Admin dan Kasir/Staf.',
+    categoryId: '5',
+    category: MOCK_CATEGORIES[4],
+    tags: ['POS', 'Point of Sale', 'Kasir', 'Inventory', 'Retail', 'Bootstrap 5', 'Laravel', 'SaaS'],
+    technology: ['Bootstrap 5', 'JavaScript', 'Laravel / PHP', 'MySQL', 'REST API', 'PWA Ready'],
+    version: '1.2.0',
+    price: 499000,
+    discountPrice: 299000,
+    licenseOptions: {
+      personal: 299000,
+      commercial: 699000,
+      extended: 1799000,
+    },
+    thumbnailUrl: '/braft-logo.png',
+    previewImages: [
+      '/braft-logo.png',
+    ],
+    demoUrl: 'https://smartpos-demo-bay.vercel.app/',
+    status: 'published',
+    salesCount: 185,
+    rating: 5.0,
+    reviewCount: 48,
+    createdAt: '2026-02-18',
+    updatedAt: '2026-02-18',
+  },
+  {
     id: 't1',
     sellerId: 'sel1',
     seller: {
@@ -348,6 +391,31 @@ export const MOCK_TEMPLATES: Template[] = [
 ];
 
 export const MOCK_PORTFOLIO: PortfolioItem[] = [
+  {
+    id: 'p-smartpos',
+    title: 'SmartPOS Megastore — Point of Sale & Inventory System',
+    slug: 'smartpos-megastore-pos-inventory-platform',
+    clientName: 'SmartPOS Megastore',
+    category: 'Web Application & POS',
+    industry: 'Point of Sale & Retail Management',
+    technology: ['Laravel', 'PHP', 'Bootstrap 5', 'MySQL', 'REST API', 'JavaScript'],
+    thumbnailUrl: '/braft-logo.png',
+    gallery: [
+      '/braft-logo.png',
+    ],
+    liveUrl: 'https://smartpos-demo-bay.vercel.app/',
+    challenge: 'Kebutuhan sistem kasir point-of-sale modern dan manajemen stok yang cepat, ringan, serta dapat diakses oleh kasir maupun admin toko secara multi-role.',
+    solution: 'Membangun aplikasi POS lengkap dengan fitur transaksi kasir cepat, barcode scanner, cetak struk nota, manajemen kategori & produk, dan dashboard analitik keuangan real-time.',
+    result: 'Waktu pelayanan kasir berkurang hingga 60% dan pencatatan inventaris barang menjadi 100% akurat dan otomatis.',
+    duration: '3 Minggu',
+    isFeatured: true,
+    testimonial: {
+      quote: 'SmartPOS sangat mudah digunakan oleh staf kami di toko. Laporan penjualan harian dan manajemen stok kini rapi dan terpantau jelas.',
+      author: 'Ikhwan Muarif',
+      role: 'Owner, SmartPOS Megastore',
+    },
+    createdAt: '2026-02-18',
+  },
   {
     id: 'p1',
     title: 'Fintech Mobile Banking Dashboard',

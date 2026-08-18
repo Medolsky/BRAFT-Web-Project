@@ -115,15 +115,24 @@ export const FeaturedTemplates: React.FC = () => {
                           )}
                         </div>
                       </div>
-                      <Link to={`/templates/${template.id}`}>
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={template.demoUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="px-3 py-1.5 rounded-xl border border-white/10 bg-zinc-900 text-zinc-300 hover:text-white hover:bg-zinc-800 text-xs font-semibold flex items-center gap-1 transition-all"
+                        >
+                          <Eye className="w-3.5 h-3.5" /> Demo
+                        </a>
                         <Button
                           size="sm"
                           variant="primary"
-                          className="text-xs px-3.5 py-1.5 font-bold shadow-md shadow-purple-500/20"
+                          onClick={() => handleAddToCart(template)}
+                          className="text-xs px-3 py-1.5 font-bold shadow-md shadow-purple-500/20"
                         >
-                          Beli Template
+                          + Keranjang
                         </Button>
-                      </Link>
+                      </div>
                     </div>
                   </div>
                 </Card>

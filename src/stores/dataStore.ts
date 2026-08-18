@@ -203,23 +203,34 @@ export const useDataStore = create<DataState>()(
     }),
     {
       name: 'braft-data-store',
-      version: 2,
+      version: 3,
       migrate: (persistedState: any) => {
         if (!persistedState) return persistedState;
-        if (persistedState.templates) {
-          persistedState.templates = persistedState.templates.map((t: any) => ({
+        
+        // Ensure new mock templates (like SmartPOS) are included
+        const existingTemplateIds = new Set((persistedState.templates || []).map((t: any) => t.id));
+        const missingTemplates = MOCK_TEMPLATES.filter((t) => !existingTemplateIds.has(t.id));
+        persistedState.templates = [
+          ...missingTemplates,
+          ...(persistedState.templates || []).map((t: any) => ({
             ...t,
             thumbnailUrl: '/braft-logo.png',
             previewImages: ['/braft-logo.png'],
-          }));
-        }
-        if (persistedState.portfolio) {
-          persistedState.portfolio = persistedState.portfolio.map((p: any) => ({
+          })),
+        ];
+
+        // Ensure new mock portfolio (like SmartPOS) are included
+        const existingPortfolioIds = new Set((persistedState.portfolio || []).map((p: any) => p.id));
+        const missingPortfolio = MOCK_PORTFOLIO.filter((p) => !existingPortfolioIds.has(p.id));
+        persistedState.portfolio = [
+          ...missingPortfolio,
+          ...(persistedState.portfolio || []).map((p: any) => ({
             ...p,
             thumbnailUrl: '/braft-logo.png',
             gallery: ['/braft-logo.png'],
-          }));
-        }
+          })),
+        ];
+
         return persistedState;
       },
     }
