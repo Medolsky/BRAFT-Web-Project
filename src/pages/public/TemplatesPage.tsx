@@ -105,11 +105,17 @@ export const TemplatesPage: React.FC = () => {
                 <HoverScale>
                   <Card className="p-0 overflow-hidden group flex flex-col justify-between h-full border-white/10 hover:border-purple-500/40">
                     {/* Thumbnail & Quick Actions */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950 flex items-center justify-center p-6 border-b border-white/5">
+                    <div className={`relative aspect-[16/10] overflow-hidden bg-zinc-950 flex items-center justify-center border-b border-white/5 ${
+                      template.thumbnailUrl.includes('braft-logo') ? 'p-6' : 'p-0'
+                    }`}>
                       <img
                         src={template.thumbnailUrl}
                         alt={template.name}
-                        className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out filter drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]"
+                        className={
+                          template.thumbnailUrl.includes('braft-logo')
+                            ? 'max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out filter drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]'
+                            : 'w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500'
+                        }
                       />
                       <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm">
                         <Button
@@ -143,8 +149,9 @@ export const TemplatesPage: React.FC = () => {
                         <p className="text-xs text-zinc-400 line-clamp-2 mt-1">{template.shortDescription}</p>
                       </div>
 
-                      <div className="flex flex-wrap gap-1.5 pt-2">
-                        {template.technology.map((tech, i) => (
+                      {/* Tech Pills */}
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {template.technology.slice(0, 3).map((tech, i) => (
                           <Badge key={i} variant="slate" size="sm">
                             {tech}
                           </Badge>
@@ -186,8 +193,18 @@ export const TemplatesPage: React.FC = () => {
       {selectedTemplate && (
         <Modal isOpen={isPreviewModalOpen} onClose={() => setIsPreviewModalOpen(false)} title={selectedTemplate.name} maxWidth="xl">
           <div className="space-y-6 text-left">
-            <div className="w-full h-64 bg-zinc-950 flex items-center justify-center p-8 rounded-xl border border-white/10">
-              <img src={selectedTemplate.thumbnailUrl} alt={selectedTemplate.name} className="max-h-full max-w-full object-contain filter drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" />
+            <div className={`w-full h-64 sm:h-80 bg-zinc-950 flex items-center justify-center rounded-xl border border-white/10 overflow-hidden ${
+              selectedTemplate.thumbnailUrl.includes('braft-logo') ? 'p-8' : 'p-0'
+            }`}>
+              <img
+                src={selectedTemplate.thumbnailUrl}
+                alt={selectedTemplate.name}
+                className={
+                  selectedTemplate.thumbnailUrl.includes('braft-logo')
+                    ? 'max-h-full max-w-full object-contain filter drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]'
+                    : 'w-full h-full object-cover object-top'
+                }
+              />
             </div>
             
             <p className="text-xs text-zinc-300 leading-relaxed">{selectedTemplate.description}</p>

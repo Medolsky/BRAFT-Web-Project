@@ -203,33 +203,48 @@ export const useDataStore = create<DataState>()(
     }),
     {
       name: 'braft-data-store',
-      version: 3,
+      version: 4,
       migrate: (persistedState: any) => {
         if (!persistedState) return persistedState;
-        
-        // Ensure new mock templates (like SmartPOS) are included
+
+        persistedState.templates = (persistedState.templates || []).map((t: any) => {
+          if (t.id === 't-smartpos') {
+            return {
+              ...t,
+              thumbnailUrl: '/smartpos-preview.png',
+              previewImages: ['/smartpos-preview.png', '/smartpos-banner.png'],
+            };
+          }
+          return {
+            ...t,
+            thumbnailUrl: t.thumbnailUrl || '/braft-logo.png',
+            previewImages: t.previewImages || ['/braft-logo.png'],
+          };
+        });
+
+        // Ensure missing templates from mock are merged
         const existingTemplateIds = new Set((persistedState.templates || []).map((t: any) => t.id));
         const missingTemplates = MOCK_TEMPLATES.filter((t) => !existingTemplateIds.has(t.id));
-        persistedState.templates = [
-          ...missingTemplates,
-          ...(persistedState.templates || []).map((t: any) => ({
-            ...t,
-            thumbnailUrl: '/braft-logo.png',
-            previewImages: ['/braft-logo.png'],
-          })),
-        ];
+        persistedState.templates = [...missingTemplates, ...persistedState.templates];
 
-        // Ensure new mock portfolio (like SmartPOS) are included
+        persistedState.portfolio = (persistedState.portfolio || []).map((p: any) => {
+          if (p.id === 'p-smartpos') {
+            return {
+              ...p,
+              thumbnailUrl: '/smartpos-banner.png',
+              gallery: ['/smartpos-banner.png', '/smartpos-preview.png'],
+            };
+          }
+          return {
+            ...p,
+            thumbnailUrl: p.thumbnailUrl || '/braft-logo.png',
+            gallery: p.gallery || ['/braft-logo.png'],
+          };
+        });
+
         const existingPortfolioIds = new Set((persistedState.portfolio || []).map((p: any) => p.id));
         const missingPortfolio = MOCK_PORTFOLIO.filter((p) => !existingPortfolioIds.has(p.id));
-        persistedState.portfolio = [
-          ...missingPortfolio,
-          ...(persistedState.portfolio || []).map((p: any) => ({
-            ...p,
-            thumbnailUrl: '/braft-logo.png',
-            gallery: ['/braft-logo.png'],
-          })),
-        ];
+        persistedState.portfolio = [...missingPortfolio, ...persistedState.portfolio];
 
         return persistedState;
       },

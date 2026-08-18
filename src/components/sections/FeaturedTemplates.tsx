@@ -51,11 +51,17 @@ export const FeaturedTemplates: React.FC = () => {
               <HoverScale>
                 <Card className="p-0 overflow-hidden group flex flex-col justify-between h-full">
                   {/* Image & Quick Action Overlay */}
-                  <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950 flex items-center justify-center p-6 border-b border-white/5">
+                  <div className={`relative aspect-[16/10] overflow-hidden bg-zinc-950 flex items-center justify-center border-b border-white/5 ${
+                    template.thumbnailUrl.includes('braft-logo') ? 'p-6' : 'p-0'
+                  }`}>
                     <img
                       src={template.thumbnailUrl}
                       alt={template.name}
-                      className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out filter drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]"
+                      className={
+                        template.thumbnailUrl.includes('braft-logo')
+                          ? 'max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out filter drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]'
+                          : 'w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500'
+                      }
                     />
                     <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm">
                       <a
