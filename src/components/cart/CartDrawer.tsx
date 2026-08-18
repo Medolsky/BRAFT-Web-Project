@@ -65,11 +65,13 @@ export const CartDrawer: React.FC = () => {
                       key={item.id}
                       className="p-3 bg-slate-900/80 border border-slate-800 rounded-xl flex items-center gap-3"
                     >
-                      <img
-                        src={item.template.thumbnailUrl}
-                        alt={item.template.name}
-                        className="w-16 h-12 object-cover rounded-lg"
-                      />
+                      <div className="w-16 h-12 bg-zinc-950 border border-white/10 rounded-lg flex items-center justify-center p-1 shrink-0">
+                        <img
+                          src={item.template.thumbnailUrl}
+                          alt={item.template.name}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="text-xs font-bold text-white truncate">
                           {item.template.name}

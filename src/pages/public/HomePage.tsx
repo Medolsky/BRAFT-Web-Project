@@ -14,6 +14,7 @@ import { PortfolioHighlight } from '../../components/sections/PortfolioHighlight
 import { Testimonials } from '../../components/sections/Testimonials';
 import { AgencyFAQSection } from '../../components/sections/AgencyFAQSection';
 import { CTASection } from '../../components/sections/CTASection';
+import { useUIStore } from '../../stores/uiStore';
 
 /** Hook to handle narrow screen responsive adjustments for the Orbital Hero */
 function useNarrow(query = '(max-width: 767px)') {
@@ -40,12 +41,12 @@ export const HomePage: React.FC = () => {
     { id: 'estimator', label: 'Kalkulator Biaya Proyek' },
   ];
 
+  const openConsultationModal = useUIStore((s) => s.openConsultationModal);
+
   const openWhatsAppConsultation = () => {
-    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '6281234567890';
-    const message = encodeURIComponent(
-      'Halo BRaft.Dev Agency! Saya ingin berkonsultasi mengenai pembuatan website untuk bisnis saya.'
+    openConsultationModal(
+      'Halo BRaft.Dev Agency! Saya ingin berkonsultasi mengenai pembuatan website custom untuk bisnis saya.'
     );
-    window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
   };
 
   return (
@@ -135,13 +136,13 @@ export const HomePage: React.FC = () => {
                       </span>
                     </div>
 
-                    <div className="relative rounded-xl overflow-hidden aspect-[16/9] bg-zinc-950 border border-white/10">
+                    <div className="relative rounded-xl overflow-hidden aspect-[16/9] bg-zinc-950 border border-white/10 flex items-center justify-center p-8 sm:p-12">
                       <img
-                        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1400&auto=format&fit=crop"
+                        src="/braft-logo.png"
                         alt="BRaft.Dev Ecosystem Interface Mockup"
-                        className="w-full h-full object-cover"
+                        className="max-h-56 sm:max-h-72 w-auto object-contain drop-shadow-[0_0_35px_rgba(168,85,247,0.35)]"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent pointer-events-none" />
 
                       {/* Floating Overlay Card */}
                       <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-zinc-950/90 border border-white/15 backdrop-blur-md">

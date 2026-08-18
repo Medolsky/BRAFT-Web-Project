@@ -6,14 +6,9 @@ import {
   ShoppingBag,
   Menu,
   X,
-  User as UserIcon,
-  LayoutDashboard,
-  LogOut,
-  FolderGit2,
 } from 'lucide-react';
 import { useCartStore } from '../../stores/cartStore';
 import { useUIStore } from '../../stores/uiStore';
-import { useAuthStore } from '../../stores/authStore';
 import { LanguageSwitcher } from '../ui/LanguageSwitcher';
 import { BraftLogo } from '../ui/BraftLogo';
 
@@ -25,8 +20,7 @@ export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const cartItemsCount = useCartStore((state) => state.items.length);
-  const { isMobileMenuOpen, setMobileMenuOpen, setCartDrawerOpen } = useUIStore();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { isMobileMenuOpen, setMobileMenuOpen, setCartDrawerOpen, openConsultationModal } = useUIStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -125,79 +119,17 @@ export const Navbar: React.FC = () => {
               </AnimatePresence>
             </motion.button>
 
-            {/* Auth Buttons */}
-            {isAuthenticated && user ? (
-              <div className="relative group">
-                <Link
-                  to={
-                    user.role === 'admin' || user.role === 'super_admin'
-                      ? '/admin'
-                      : user.role === 'seller'
-                      ? '/seller'
-                      : '/account'
-                  }
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-zinc-950 text-xs font-semibold hover:bg-zinc-200 transition-colors"
+            {/* Direct Action Button */}
+            <div className="hidden sm:flex items-center">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <button
+                  onClick={() => openConsultationModal('Halo BRaft.Dev! Saya ingin berkonsultasi mengenai pembuatan website.')}
+                  className="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-all shadow-md inline-flex items-center gap-1.5 cursor-pointer"
                 >
-                  <div className="w-5 h-5 rounded-full bg-purple-600 flex items-center justify-center text-white text-[10px] font-bold">
-                    {user.fullName?.charAt(0) || 'U'}
-                  </div>
-                  <span className="truncate max-w-[90px]">{user.fullName}</span>
-                </Link>
-
-                {/* Animated Dropdown */}
-                <div className="absolute right-0 top-full mt-2 w-48 bg-[#09090b] border border-white/10 rounded-2xl shadow-2xl p-2 hidden group-hover:block backdrop-blur-xl">
-                  <div className="px-3 py-2 border-b border-white/10 mb-1">
-                    <p className="text-xs font-bold text-white truncate">{user.fullName}</p>
-                    <p className="text-[10px] text-zinc-400 capitalize">{user.role}</p>
-                  </div>
-                  <Link
-                    to="/account"
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors"
-                  >
-                    <UserIcon className="w-3.5 h-3.5" /> Dashboard Account
-                  </Link>
-                  {user.role === 'seller' && (
-                    <Link
-                      to="/seller"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors"
-                    >
-                      <FolderGit2 className="w-3.5 h-3.5 text-orange-400" /> Seller Dashboard
-                    </Link>
-                  )}
-                  {(user.role === 'admin' || user.role === 'super_admin') && (
-                    <Link
-                      to="/admin"
-                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-zinc-300 hover:text-white hover:bg-white/10 transition-colors"
-                    >
-                      <LayoutDashboard className="w-3.5 h-3.5 text-purple-400" /> Admin Panel
-                    </Link>
-                  )}
-                  <button
-                    onClick={logout}
-                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-xs text-red-400 hover:bg-red-500/10 transition-colors mt-1"
-                  >
-                    <LogOut className="w-3.5 h-3.5" /> {t('nav.logout')}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="hidden sm:flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-400 hover:text-white hover:bg-white/10 transition-all"
-                >
-                  {t('nav.login')}
-                </Link>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Link
-                    to="/register"
-                    className="px-4 py-1.5 rounded-full text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-all shadow-md inline-block"
-                  >
-                    {t('nav.getStarted')}
-                  </Link>
-                </motion.div>
-              </div>
-            )}
+                  Konsultasi Gratis
+                </button>
+              </motion.div>
+            </div>
 
             {/* Mobile Hamburger Toggle */}
             <motion.button
@@ -211,7 +143,7 @@ export const Navbar: React.FC = () => {
                     <X className="w-5 h-5" />
                   </motion.div>
                 ) : (
-                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <motion.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
                     <Menu className="w-5 h-5" />
                   </motion.div>
                 )}
@@ -254,19 +186,16 @@ export const Navbar: React.FC = () => {
                   </motion.div>
                 );
               })}
-              <div className="pt-4 border-t border-white/10 flex gap-3">
-                <Link
-                  to="/login"
-                  className="flex-1 text-center px-4 py-2.5 rounded-xl text-sm font-medium text-zinc-300 border border-white/10 hover:bg-white/5 transition-colors"
+              <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openConsultationModal('Halo BRaft.Dev! Saya ingin berkonsultasi mengenai project website.');
+                  }}
+                  className="flex-1 text-center px-4 py-2.5 rounded-xl text-xs font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-colors"
                 >
-                  {t('nav.login')}
-                </Link>
-                <Link
-                  to="/register"
-                  className="flex-1 text-center px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-zinc-950 hover:bg-zinc-200 transition-colors"
-                >
-                  {t('nav.getStarted')}
-                </Link>
+                  Konsultasi Gratis
+                </button>
               </div>
             </nav>
           </motion.div>

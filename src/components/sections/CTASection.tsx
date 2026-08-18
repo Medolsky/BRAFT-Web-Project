@@ -4,16 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { ArrowRight, Sparkles, PhoneCall } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { FadeIn, GlowPulse, ScaleIn } from '../ui/motion';
+import { useUIStore } from '../../stores/uiStore';
 
 export const CTASection: React.FC = () => {
   const { t } = useTranslation();
+  const openConsultationModal = useUIStore((s) => s.openConsultationModal);
 
   const openWhatsApp = () => {
-    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '6281234567890';
-    const message = encodeURIComponent(
-      'Halo BRaft.Dev! Saya tertarik untuk berkonsultasi mengenai jasa pembuatan website.'
-    );
-    window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+    openConsultationModal('Halo BRaft.Dev! Saya tertarik untuk berkonsultasi mengenai jasa pembuatan website.');
   };
 
   return (

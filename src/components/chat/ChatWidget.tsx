@@ -5,12 +5,12 @@ import { useUIStore } from '../../stores/uiStore';
 import { Button } from '../ui/Button';
 
 export const ChatWidget: React.FC = () => {
-  const { isChatWidgetOpen, setChatWidgetOpen } = useUIStore();
+  const { isChatWidgetOpen, setChatWidgetOpen, openConsultationModal } = useUIStore();
   const [messages, setMessages] = useState([
     {
       id: 1,
       sender: 'bot',
-      text: 'Halo! Ada yang bisa kami bantu mengenai jasa website atau template?',
+      text: 'Halo! Ada yang bisa kami bantu mengenai jasa pembuatan website atau katalog template?',
     },
   ]);
   const [input, setInput] = useState('');
@@ -27,18 +27,15 @@ export const ChatWidget: React.FC = () => {
         {
           id: Date.now() + 1,
           sender: 'bot',
-          text: 'Terima kasih telah menghubungi kami. Tim kami akan segera merespons, atau Anda dapat langsung chat via WhatsApp untuk respons lebih cepat!',
+          text: 'Terima kasih telah menghubungi kami! Tim konsultan senior kami (Rapi / Ikhwan) siap membantu Anda via WhatsApp atau Email untuk respons instan.',
         },
       ]);
-    }, 1000);
+    }, 800);
   };
 
   const openWhatsApp = () => {
-    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '6281234567890';
-    const message = encodeURIComponent(
-      'Halo BRaft.Dev! Saya ingin bertanya mengenai layanan website.'
-    );
-    window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+    setChatWidgetOpen(false);
+    openConsultationModal('Halo BRaft.Dev! Saya ingin bertanya mengenai layanan website.');
   };
 
   return (

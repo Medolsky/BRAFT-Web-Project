@@ -203,6 +203,25 @@ export const useDataStore = create<DataState>()(
     }),
     {
       name: 'braft-data-store',
+      version: 2,
+      migrate: (persistedState: any) => {
+        if (!persistedState) return persistedState;
+        if (persistedState.templates) {
+          persistedState.templates = persistedState.templates.map((t: any) => ({
+            ...t,
+            thumbnailUrl: '/braft-logo.png',
+            previewImages: ['/braft-logo.png'],
+          }));
+        }
+        if (persistedState.portfolio) {
+          persistedState.portfolio = persistedState.portfolio.map((p: any) => ({
+            ...p,
+            thumbnailUrl: '/braft-logo.png',
+            gallery: ['/braft-logo.png'],
+          }));
+        }
+        return persistedState;
+      },
     }
   )
 );

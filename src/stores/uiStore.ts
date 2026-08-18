@@ -6,10 +6,14 @@ interface UIState {
   isMobileMenuOpen: boolean;
   isCartDrawerOpen: boolean;
   isChatWidgetOpen: boolean;
+  isConsultationModalOpen: boolean;
+  consultationMessage: string;
   toggleDarkMode: () => void;
   setMobileMenuOpen: (open: boolean) => void;
   setCartDrawerOpen: (open: boolean) => void;
   setChatWidgetOpen: (open: boolean) => void;
+  openConsultationModal: (msg?: string) => void;
+  closeConsultationModal: () => void;
 }
 
 export const useUIStore = create<UIState>()(
@@ -19,6 +23,8 @@ export const useUIStore = create<UIState>()(
       isMobileMenuOpen: false,
       isCartDrawerOpen: false,
       isChatWidgetOpen: false,
+      isConsultationModalOpen: false,
+      consultationMessage: '',
       toggleDarkMode: () =>
         set((state) => {
           const next = !state.isDarkMode;
@@ -32,6 +38,10 @@ export const useUIStore = create<UIState>()(
       setMobileMenuOpen: (open) => set({ isMobileMenuOpen: open }),
       setCartDrawerOpen: (open) => set({ isCartDrawerOpen: open }),
       setChatWidgetOpen: (open) => set({ isChatWidgetOpen: open }),
+      openConsultationModal: (msg = '') =>
+        set({ isConsultationModalOpen: true, consultationMessage: msg }),
+      closeConsultationModal: () =>
+        set({ isConsultationModalOpen: false, consultationMessage: '' }),
     }),
     {
       name: 'webcraft-ui-theme',

@@ -5,12 +5,15 @@ import { Card } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { FadeIn, StaggerContainer, StaggerItem, HoverScale } from '../ui/motion';
+import { useUIStore } from '../../stores/uiStore';
 
 export const FeaturedServices: React.FC = () => {
+  const openConsultationModal = useUIStore((s) => s.openConsultationModal);
+
   const openWhatsAppCustom = () => {
-    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '6281234567890';
-    const text = encodeURIComponent('Halo Admin BRaft.Dev! Saya berminat untuk memesan Website Custom (Perusahaan/Startup/E-commerce). Mohon informasi konsultasi & penawarannya.');
-    window.open(`https://wa.me/${waNumber}?text=${text}`, '_blank');
+    openConsultationModal(
+      'Halo Admin BRaft.Dev! Saya berminat untuk memesan Website Custom (Perusahaan/Startup/E-commerce). Mohon informasi konsultasi & penawarannya.'
+    );
   };
 
   return (

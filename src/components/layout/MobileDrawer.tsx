@@ -1,18 +1,16 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { X, LogOut, User as UserIcon } from 'lucide-react';
+import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUIStore } from '../../stores/uiStore';
-import { useAuthStore } from '../../stores/authStore';
 import { LanguageSwitcher } from '../ui/LanguageSwitcher';
 import { BraftLogo } from '../ui/BraftLogo';
 
 export const MobileDrawer: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const { isMobileMenuOpen, setMobileMenuOpen } = useUIStore();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { isMobileMenuOpen, setMobileMenuOpen, openConsultationModal } = useUIStore();
 
   const navLinks = [
     { label: t('nav.home'), path: '/' },
@@ -91,44 +89,17 @@ export const MobileDrawer: React.FC = () => {
                 <LanguageSwitcher />
               </div>
 
-              {isAuthenticated && user ? (
-                <div className="space-y-2">
-                  <Link
-                    to="/account"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-200 text-sm font-semibold"
-                  >
-                    <UserIcon className="w-4 h-4 text-purple-400" />
-                    Dashboard ({user.fullName})
-                  </Link>
-                  <button
-                    onClick={() => {
-                      logout();
-                      setMobileMenuOpen(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-red-500/10 text-red-400 text-sm font-semibold"
-                  >
-                    <LogOut className="w-4 h-4" /> {t('nav.logout')}
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-2">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center py-2.5 rounded-xl border border-slate-800 text-xs font-semibold text-slate-300"
-                  >
-                    {t('nav.login')}
-                  </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center py-2.5 rounded-xl bg-purple-600 text-xs font-semibold text-white shadow-lg shadow-purple-500/20"
-                  >
-                    {t('nav.getStarted')}
-                  </Link>
-                </div>
-              )}
+              <div className="space-y-2">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    openConsultationModal('Halo BRaft.Dev! Saya ingin berkonsultasi mengenai project website.');
+                  }}
+                  className="w-full flex items-center justify-center py-3 rounded-xl bg-white text-zinc-950 text-xs font-bold hover:bg-zinc-200 transition-colors shadow-lg"
+                >
+                  Konsultasi Gratis
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>

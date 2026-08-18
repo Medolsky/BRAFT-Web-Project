@@ -53,8 +53,8 @@ export const PortfolioPage: React.FC = () => {
             {filteredItems.map((item, idx) => (
               <ScaleIn key={item.id} delay={idx * 0.1}>
                 <Card className="p-0 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0 border-white/10 hover:border-purple-500/30 group">
-                  <SlideIn direction="left" className="lg:col-span-7 bg-zinc-950 aspect-[16/10] overflow-hidden">
-                    <img src={item.thumbnailUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                  <SlideIn direction="left" className="lg:col-span-7 bg-zinc-950 aspect-[16/10] overflow-hidden flex items-center justify-center p-8 sm:p-12 border-b lg:border-b-0 lg:border-r border-white/5">
+                    <img src={item.thumbnailUrl} alt={item.title} className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out filter drop-shadow-[0_0_25px_rgba(168,85,247,0.3)]" />
                   </SlideIn>
 
                   <SlideIn direction="right" className="lg:col-span-5 p-8 flex flex-col justify-between space-y-6">

@@ -6,6 +6,7 @@ import { Footer } from './Footer';
 import { MobileDrawer } from './MobileDrawer';
 import { CartDrawer } from '../cart/CartDrawer';
 import { ChatWidget } from '../chat/ChatWidget';
+import { ConsultationModal } from '../ui/ConsultationModal';
 
 const pageVariants = {
   initial: { opacity: 0, y: 12 },
@@ -21,6 +22,7 @@ export const PublicLayout: React.FC = () => {
       <Navbar />
       <MobileDrawer />
       <CartDrawer />
+      <ConsultationModal />
       <main className="flex-grow pt-20">
         <AnimatePresence mode="wait">
           <motion.div

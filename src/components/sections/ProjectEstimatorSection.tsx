@@ -4,6 +4,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { FadeIn } from '../ui/motion';
 import { Calculator, CheckCircle2, Clock, ShieldCheck, MessageSquare, Zap, Code2, Headphones } from 'lucide-react';
+import { useUIStore } from '../../stores/uiStore';
 
 type ProjectType = {
   id: string;
@@ -98,23 +99,23 @@ export const ProjectEstimatorSection: React.FC = () => {
     }).format(val);
   };
 
+  const openConsultationModal = useUIStore((s) => s.openConsultationModal);
+
   const handleConsultation = () => {
-    const waNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '6281234567890';
     const selectedFeatNames = selectedFeatures
       .map((id) => FEATURE_OPTIONS.find((f) => f.id === id)?.name)
       .filter(Boolean)
       .join(', ');
 
-    const message = encodeURIComponent(
+    const quoteText =
       `Halo BRaft.Dev Agency! Saya ingin berkonsultasi untuk pembuatan website:\n\n` +
-        `📌 *Tipe Proyek*: ${selectedType.name}\n` +
-        `🛠️ *Fitur Tambahan*: ${selectedFeatNames || 'Tidak ada'}\n` +
-        `⏱️ *Estimasi Pengerjaan*: ~${totalDays} Hari Kerja\n` +
-        `💰 *Estimasi Biaya*: ${formatRupiah(totalPrice)}\n\n` +
-        `Mohon info ketersediaan slot tim developer & penawaran resminya. Terima kasih!`
-    );
+      `📌 *Tipe Proyek*: ${selectedType.name}\n` +
+      `🛠️ *Fitur Tambahan*: ${selectedFeatNames || 'Tidak ada'}\n` +
+      `⏱️ *Estimasi Pengerjaan*: ~${totalDays} Hari Kerja\n` +
+      `💰 *Estimasi Biaya*: ${formatRupiah(totalPrice)}\n\n` +
+      `Mohon info ketersediaan slot tim developer & penawaran resminya. Terima kasih!`;
 
-    window.open(`https://wa.me/${waNumber}?text=${message}`, '_blank');
+    openConsultationModal(quoteText);
   };
 
   return (

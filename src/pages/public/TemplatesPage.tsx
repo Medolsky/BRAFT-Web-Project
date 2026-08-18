@@ -105,11 +105,11 @@ export const TemplatesPage: React.FC = () => {
                 <HoverScale>
                   <Card className="p-0 overflow-hidden group flex flex-col justify-between h-full border-white/10 hover:border-purple-500/40">
                     {/* Thumbnail & Quick Actions */}
-                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950 flex items-center justify-center p-6 border-b border-white/5">
                       <img
                         src={template.thumbnailUrl}
                         alt={template.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700 ease-out filter drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]"
                       />
                       <div className="absolute inset-0 bg-zinc-950/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3 backdrop-blur-sm">
                         <Button
@@ -186,7 +186,9 @@ export const TemplatesPage: React.FC = () => {
       {selectedTemplate && (
         <Modal isOpen={isPreviewModalOpen} onClose={() => setIsPreviewModalOpen(false)} title={selectedTemplate.name} maxWidth="xl">
           <div className="space-y-6 text-left">
-            <img src={selectedTemplate.thumbnailUrl} alt={selectedTemplate.name} className="w-full h-64 object-cover rounded-xl border border-white/10" />
+            <div className="w-full h-64 bg-zinc-950 flex items-center justify-center p-8 rounded-xl border border-white/10">
+              <img src={selectedTemplate.thumbnailUrl} alt={selectedTemplate.name} className="max-h-full max-w-full object-contain filter drop-shadow-[0_0_25px_rgba(168,85,247,0.35)]" />
+            </div>
             
             <p className="text-xs text-zinc-300 leading-relaxed">{selectedTemplate.description}</p>
 

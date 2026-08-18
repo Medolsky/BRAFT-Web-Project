@@ -25,9 +25,6 @@ import { AccountOverviewPage } from '../pages/account/OverviewPage';
 import { SellerOverviewPage } from '../pages/seller/OverviewPage';
 import { AdminOverviewPage } from '../pages/admin/OverviewPage';
 
-import { AuthGuard } from '../guards/AuthGuard';
-import { RoleGuard } from '../guards/RoleGuard';
-
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
@@ -49,41 +46,20 @@ export const AppRoutes: React.FC = () => {
         <Route path="/register" element={<RegisterPage />} />
       </Route>
 
-      {/* User Dashboard */}
-      <Route
-        path="/account"
-        element={
-          <AuthGuard>
-            <DashboardLayout />
-          </AuthGuard>
-        }
-      >
+      {/* User Dashboard — Direct Access */}
+      <Route path="/account" element={<DashboardLayout />}>
         <Route index element={<AccountOverviewPage />} />
         <Route path="*" element={<Navigate to="/account" replace />} />
       </Route>
 
-      {/* Seller Dashboard */}
-      <Route
-        path="/seller"
-        element={
-          <RoleGuard allowedRoles={['seller', 'admin', 'super_admin']}>
-            <SellerLayout />
-          </RoleGuard>
-        }
-      >
+      {/* Seller Dashboard — Direct Access */}
+      <Route path="/seller" element={<SellerLayout />}>
         <Route index element={<SellerOverviewPage />} />
         <Route path="*" element={<Navigate to="/seller" replace />} />
       </Route>
 
-      {/* Admin Panel */}
-      <Route
-        path="/admin"
-        element={
-          <RoleGuard allowedRoles={['admin', 'super_admin']}>
-            <AdminLayout />
-          </RoleGuard>
-        }
-      >
+      {/* Admin Panel — Direct Access */}
+      <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminOverviewPage />} />
         <Route path="*" element={<AdminOverviewPage />} />
       </Route>
